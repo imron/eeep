@@ -11,3 +11,4 @@ repository = "https://github.com/imron/eeep.git"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+chrono = { version = "0.4", default-features = false }

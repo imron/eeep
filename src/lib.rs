@@ -1,11 +1,23 @@
-use std::error::Error;
+mod error;
+pub mod internal;
+mod result;
 
-pub fn seconds_since_epoch(_s: &str) -> Result<i64, Box<dyn Error>> {
-    Ok(0)
+use crate::result::Result;
+use chrono::prelude::*;
+
+#[inline]
+pub fn seconds_since_epoch(s: &str) -> Result<i64> {
+    Ok(internal::datetime_since_epoch_bit_manipulation(s)?.timestamp())
 }
 
-pub fn nanoseconds_since_epoch(_s: &str) -> Result<i64, Box<dyn Error>> {
-    Ok(0)
+#[inline]
+pub fn nanos_since_epoch(s: &str) -> Result<i64> {
+    Ok(internal::datetime_since_epoch_bit_manipulation(s)?.timestamp_nanos())
+}
+
+#[inline]
+pub fn datetime(s: &str) -> Result<DateTime<Utc>> {
+    internal::datetime_since_epoch_bit_manipulation(s)
 }
 
 #[cfg(test)]
@@ -14,14 +26,14 @@ mod tests {
 
     #[test]
     fn seconds_since_epoch_is_valid() {
-        let result = seconds_since_epoch(&"2023-04-07T12:52:00.321");
+        let result = seconds_since_epoch("2023-04-07T12:52:00.321Z");
         assert!(result.is_ok());
         assert_eq!(1680871920, result.unwrap());
     }
 
     #[test]
-    fn nanoseconds_since_epoch_is_valid() {
-        let result = seconds_since_epoch(&"2023-04-07T12:52:00.321");
+    fn nanos_since_epoch_is_valid() {
+        let result = nanos_since_epoch("2023-04-07T12:52:00.321Z");
         assert!(result.is_ok());
         assert_eq!(1680871920321000000, result.unwrap());
     }
