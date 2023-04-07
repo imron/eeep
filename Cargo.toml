@@ -1,0 +1,13 @@
+[package]
+name = "eeep"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+keywords = ["rfc3339", "timestamp"]
+authors = ["Imron Alston"]
+description = "eeep is a high-performance library for converting rfc3339 timestamps to unix timestamps"
+repository = "https://github.com/imron/eeep.git"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
