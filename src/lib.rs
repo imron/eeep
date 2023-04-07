@@ -1,6 +1,6 @@
-mod error;
+pub mod error;
 pub mod internal;
-mod result;
+pub mod result;
 
 use crate::result::Result;
 use chrono::prelude::*;
