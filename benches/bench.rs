@@ -2,9 +2,7 @@
 extern crate test;
 
 use chrono::prelude::*;
-use eeep::error::EeepError;
-use eeep::internal::*;
-use eeep::result::Result;
+use eeep::Result;
 use test::{black_box, Bencher};
 
 const TIMESTAMP: &str = "2023-04-07T15:10:20Z";
@@ -13,7 +11,7 @@ const EXPECTED: i64 = 1680880220000000000;
 fn passthrough(_s: &str) -> Result<DateTime<Utc>> {
     let naive = match NaiveDateTime::from_timestamp_opt(1680880220, 0) {
         Some(naive) => naive,
-        _ => return Err(EeepError::InvalidTimestamp),
+        _ => return Err(eeep::Error::InvalidTimestamp),
     };
     Ok(DateTime::<Utc>::from_utc(naive, Utc))
 }

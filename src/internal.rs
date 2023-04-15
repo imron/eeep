@@ -1,5 +1,4 @@
-use crate::error::EeepError;
-use crate::result::Result;
+use crate::Result;
 use chrono::prelude::*;
 
 fn datetime_with(
@@ -14,9 +13,9 @@ fn datetime_with(
     let naive = match NaiveDate::from_ymd_opt(year, month, day) {
         Some(date) => match date.and_hms_nano_opt(hour, minute, second, nanos) {
             Some(dt) => dt,
-            None => Err(EeepError::InvalidInputString)?,
+            None => Err(crate::Error::InvalidInputString)?,
         },
-        None => Err(EeepError::InvalidInputString)?,
+        None => Err(crate::Error::InvalidInputString)?,
     };
 
     Ok(DateTime::<Utc>::from_utc(naive, Utc))
@@ -26,37 +25,37 @@ pub fn datetime_since_epoch_bit_manipulation(s: &str) -> Result<DateTime<Utc>> {
     let bytes = s.as_bytes();
     let len = bytes.len();
     if len < 20 {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     let year = convert_4_digits(&bytes[..4])? as i32;
 
     if bytes[4] != b'-' {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     let month = convert_2_digits(&bytes[5..7])?;
 
     if bytes[7] != b'-' {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     let day = convert_2_digits(&bytes[8..10])?;
 
     if bytes[10] != b'T' {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     let hour = convert_2_digits(&bytes[11..13])?;
 
     if bytes[13] != b':' {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     let minute = convert_2_digits(&bytes[14..16])?;
 
     if bytes[16] != b':' {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     let second = convert_2_digits(&bytes[17..19])?;
@@ -73,7 +72,7 @@ pub fn datetime_since_epoch_bit_manipulation(s: &str) -> Result<DateTime<Utc>> {
     }
 
     if count > 0 && bytes[19] != b'.' {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     let nanos = match count {
@@ -90,7 +89,7 @@ pub fn datetime_since_epoch_bit_manipulation(s: &str) -> Result<DateTime<Utc>> {
     };
 
     if end > len || bytes[end - 1] != b'Z' {
-        return Err(EeepError::InvalidInputString);
+        return Err(crate::Error::InvalidInputString);
     }
 
     datetime_with(year, month, day, hour, minute, second, nanos)

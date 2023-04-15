@@ -1,8 +1,8 @@
-pub mod error;
-pub mod internal;
-pub mod result;
+mod error;
+mod internal;
 
-use crate::result::Result;
+pub type Error = crate::error::Error;
+pub type Result<T> = std::result::Result<T, crate::Error>;
 use chrono::prelude::*;
 
 #[inline]
