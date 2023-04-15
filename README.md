@@ -1,3 +1,3 @@
 # eeep
 
-eeep is a high-performance library for converting rfc3339 timestamps to unix timestamps.
+eeep converts rfc3339 timestamps to unix timestamps.
