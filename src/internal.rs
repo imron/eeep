@@ -1,6 +1,7 @@
 use crate::Result;
 use chrono::prelude::*;
 
+#[inline]
 fn datetime_with(
     year: i32,
     month: u32,

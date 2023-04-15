@@ -35,13 +35,23 @@ pub fn bench_passthrough(b: &mut Bencher) {
 }
 
 #[bench]
-pub fn datetime_since_epoch(b: &mut Bencher) {
+pub fn parse_from_timestamp_datetime(b: &mut Bencher) {
     assert_eq!(
         EXPECTED,
-        datetime_since_epoch_bit_manipulation(TIMESTAMP)
+        eeep::parse_from_timestamp_datetime(TIMESTAMP)
             .unwrap()
             .timestamp_nanos()
     );
     b.bytes = TIMESTAMP.len() as u64;
-    b.iter(|| datetime_since_epoch_bit_manipulation(black_box(TIMESTAMP)));
+    b.iter(|| eeep::parse_from_timestamp_datetime(black_box(TIMESTAMP)));
+}
+
+#[bench]
+pub fn parse_from_timestamp_nanos(b: &mut Bencher) {
+    assert_eq!(
+        EXPECTED,
+        eeep::parse_from_timestamp_nanos(TIMESTAMP).unwrap()
+    );
+    b.bytes = TIMESTAMP.len() as u64;
+    b.iter(|| eeep::parse_from_timestamp_nanos(black_box(TIMESTAMP)));
 }
